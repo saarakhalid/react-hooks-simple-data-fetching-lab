@@ -1,38 +1,31 @@
 // create your App component here
-// App.js
-import React, { useState, useEffect } from 'react';
+import React,{useState,useEffect} from "react";
+const App = () => {
+    
+    const[dogImage,SetDogImage]=useState(null)
+    const[isLoaded,SetisLoaded]=useState(false)
+    useEffect(() => {
 
-function App() {
-  const [dogImage, setDogImage] = useState(null);
-  const [loading, setLoading] = useState(true);
+        fetch("https://dog.ceo/api/breeds/image/random")
+        .then((res) => res.json())
+        .then((data) => {
 
-  useEffect(() => {
-    setLoading(true);
+            SetDogImage(data.message)
+            SetisLoaded(true)
+        })
+    },[])
+return(
 
-    // Fetch a random dog image
-    fetch('https://dog.ceo/api/breeds/image/random')
-      .then((response) => response.json())
-      .then((data) => {
-        setDogImage(data.message); // Update the state with the fetched image URL
-      })
-      .catch((error) => {
-        console.error('Error fetching dog image:', error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    <div>
+            {isLoaded?(
+                <img src={dogImage} alt='A Random Dog'></img>
+            ):(
+                <p>Loading...</p>
+            )}
+            
+        </div>
+)
 
-  return (
-    <div className="App">
-      <h2>Random Dog Image</h2>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <img src={dogImage} alt="A Random Dog" style={{ maxWidth: '100%' }} />
-      )}
-    </div>
-  );
+
 }
-
 export default App;
